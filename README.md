@@ -11,6 +11,8 @@ to `db-tenants.json` and fill it out as appropriate.
 If you want to set a API prefix or listen socket/port, create a file called
 `.env.local` and set the relevant values, using the defaults set in `.env` as an example.
 
+The .env file holds the general configuration for the project and is shared among all developers and environments. On the other hand, the .env.local file is a personal override file used by individual developers to customize their local environment without affecting others or the shared configuration
+
 From there, there are two different ways to start the app
 
 ### Development
@@ -39,3 +41,35 @@ Note that if there are any unapplied database migrations, you will still need to
 ## Framework Documentation
 - [FoalTS](https://foalts.org/docs/) - API framework
 - [Prisma](https://prisma.io/) - ORM (DB interface)
+
+## Example of how to set up Docker with Prisma
+
+https://www.section.io/engineering-education/dockerized-prisma-postgres-api/#create-and-run-a-prisma-server-with-docker
+
+## Example of a docker-compose.yml file with setting up the MySQL db
+
+version: '3.2'
+
+services:
+  db:
+    image: dockersamples/tidb:nanoserver-1809
+    ports:
+      - "3306:4000"
+
+  app:
+    image: dockersamples/dotnet-album-viewer
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - "Data:Provider=MySQL"
+      - "Data:ConnectionString=Server=db;Port=4000;Database=AlbumViewer;User=root;SslMode=None"      
+    depends_on:
+      - db
+
+networks:
+  default:
+    external:
+      name: nat

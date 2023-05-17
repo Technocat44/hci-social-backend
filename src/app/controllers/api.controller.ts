@@ -5,6 +5,10 @@ import { UserController } from './api/user.controller';
 import { attributeSchema, fetchUser } from '../utils';
 import { DB, PrismaSessionStore } from '../services';
 
+// This file is how the Swagger / OpenAPI is structured on the webpage at https://webdev.cse.buffalo.edu/hci/api/swagger/#
+
+// Each of the subcontrollers is what we see for each drop down.
+
 const prefix = Config.get('api_prefix', 'string', '');
 const tenants = Object.keys(DB.getTenantsConfig());
 
@@ -12,6 +16,7 @@ const tenants = Object.keys(DB.getTenantsConfig());
   title: 'HCI-Social API',
   version: '2.0.0'
 })
+// the enum for tenantId comes from the db-tenants.json file. that is where we set up the db connection string
 @ApiServer({ url: `${prefix}/api/{tenantId}`, variables: {'tenantId': {enum: tenants, default: tenants[0]}} })
 @ApiSecurityRequirement({ bearerAuth: [] })
 @ApiDefineSecurityScheme('bearerAuth', { type: 'http', scheme: 'bearer' })
