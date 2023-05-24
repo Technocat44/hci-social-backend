@@ -117,6 +117,12 @@ export class UserController {
   @ApiResponse(404, { description: 'User not found.' })
   @ApiResponse(200, { description: 'Returns the user.' })
   @ValidatePathParam('userId', { type: 'number' })
+  /*
+  The Context object, which is passed to each route handler, 
+  contains the express request object. This represents the HTTP request
+   and has properties for the request query string, parameters, 
+   body, HTTP headers, and so on.
+  */
   async findUserById(ctx: Context) {
     const params = ctx.request.params as {userId: number, tenantId: string};
     const user = await this.db.getClient(params.tenantId).user.findUnique({
