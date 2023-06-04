@@ -15,9 +15,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --production
-RUN npm install -g cross-env
-RUN npm install shx
+RUN npm install --production && npm install -g cross-env && npm install shx
 
 COPY . .
 
@@ -25,12 +23,10 @@ ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait
 RUN chmod +x /wait
 
 
-RUN apk add --no-cache openssl
+RUN apk add --no-cache openssl && apk add --no-cache libssl1.1
 
-# Install libssl1.1 package
-RUN apk add --no-cache libssl1.1
 
 # Set the PRISMA_QUERY_ENGINE_BINARY environment variable
-ENV PRISMA_QUERY_ENGINE_BINARY=/usr/local/bin/query-engine-linux-musl
-CMD /wait && npm run build && npm run push-schema && LD_LIBRARY_PATH=./node_modules/@prisma/engines/linux-musl/ && npm run migrate && npm run make-migrations && npm run develop
+
+CMD /wait && npm run build && npm run push-schema && npm run migrate && npm run make-migrations && npm run develop
 

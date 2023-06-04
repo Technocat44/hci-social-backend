@@ -17,6 +17,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
+      APACHE_SERVER_NAME: localhost
       PMA_HOST: mysql
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -24,6 +25,7 @@ services:
       - 8080:80
     depends_on:
       - mysql
+    
 
   backend:
     build:
