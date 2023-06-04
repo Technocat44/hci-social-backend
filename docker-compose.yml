@@ -28,6 +28,7 @@ services:
     
 
   backend:
+    image: <changeme>
     build:
       context: .
       dockerfile: Dockerfile
@@ -44,11 +45,3 @@ services:
     depends_on:
       - mysql
 
-  frontend:
-    build:
-      context: ${FRONTEND_PATH}
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    depends_on:
-      - backend
